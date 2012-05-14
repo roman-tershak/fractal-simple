@@ -29,7 +29,7 @@ public class MandelbrotPlainFractalPainter implements Painter {
 				Complex z = new Complex(0.0, 0.0);
 				boolean inSet = true;
 				
-				for (int i = 0; i < 500; i++) {
+				for (int i = 0; i < 1000; i++) {
 					z = z.mul(z).add(c);
 					
 					double a = z.getA();

@@ -31,7 +31,7 @@ public class Main extends JFrame {
     }
 	
 	private void initContentPane() {
-		panel = new PaintingArea(new MandelbrotPlainFractalPainter());
+		panel = new PaintingArea(new MandelbrotPlainFractalPainter(new DefaultCoordsPainter()));
 		getContentPane().add(panel);
 	}
 

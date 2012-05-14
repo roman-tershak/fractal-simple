@@ -5,6 +5,12 @@ import java.awt.Graphics2D;
 
 public class MandelbrotPlainFractalPainter implements Painter {
 
+	private final CoordsPainter coordsPainter;
+	
+	public MandelbrotPlainFractalPainter(CoordsPainter coordsPainter) {
+		this.coordsPainter = coordsPainter;
+	}
+
 	public void paintOn(PaintingArea paintingArea, Graphics g) {
 		
 		Graphics2D g2d = (Graphics2D) g;
@@ -15,23 +21,16 @@ public class MandelbrotPlainFractalPainter implements Painter {
         int cy = height / 2;
         double ratio = (width > height ? height : width) / 4;
 		
-        g2d.drawLine(0, cy, width, cy);
-        g2d.drawLine(cx, 0, cx, height);
-        
-        int r1 = (int) ratio;
-        int r2 = (int) (2 * ratio);
-        g2d.drawOval(cx-r1, cy-r1, 2*r1, 2*r1);
-        g2d.drawOval(cx-r2, cy-r2, 2*r2, 2*r2);
-        
-		for (double ca = -2.0; ca < 2.0; ca += 0.005) {
-			for (double cb = -2.0; cb < 2.0; cb += 0.005) {
+        double d = 1/ratio;
+		for (double ca = -2.0; ca < 2.0; ca += d) {
+			for (double cb = -2.0; cb < 2.0; cb += d) {
 				
 				Complex c = new Complex(ca, cb);
 				Complex z = new Complex(0.0, 0.0);
 				boolean inSet = true;
 				
-				for (int i = 0; i < 100; i++) {
-					z = z.mul(z).mul(z).mul(z).mul(z).mul(z).mul(z).mul(z).add(c);
+				for (int i = 0; i < 500; i++) {
+					z = z.mul(z).add(c);
 					
 					double a = z.getA();
 					double b = z.getB();
@@ -51,6 +50,8 @@ public class MandelbrotPlainFractalPainter implements Painter {
 				}
 			}
 		}
+		
+		coordsPainter.drawCoords(g2d, cx, cy, width, height, ratio);
 		
 	}
 

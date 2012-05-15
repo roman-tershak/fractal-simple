@@ -44,10 +44,12 @@ public class FractalCalculatorImpl implements FractalCalculator {
 			
 			int[][] m = new int[xn][yn];
 			
-			for (double ai = a1; ai < a2 ; ai += dx) {
-				for (double bi = b1; bi < b2 ; bi += dy) {
+			double ai = a1;
+			double bi = b1;
+			for (int i = 0; i < xn; i++, ai += dx) {
+				for (int j = 0; j < yn; j++, bi += dy) {
 					
-					
+					m[i][j] = 
 				}
 				
 			}

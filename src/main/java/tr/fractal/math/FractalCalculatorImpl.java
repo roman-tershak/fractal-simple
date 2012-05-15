@@ -14,6 +14,15 @@ public class FractalCalculatorImpl implements FractalCalculator {
 	
 	private final AtomicBoolean recalculate = new AtomicBoolean(true);
 	private int[][] fractalMatrix;
+	private FractalFormula formula;
+
+	
+	public FractalCalculatorImpl(FractalFormula formula) {
+		this.formula = formula;
+		
+		this.v1 = new Complex(-1, -1);
+		this.v2 = new Complex(1, 1);
+	}
 
 	public void setArea(Complex v1, Complex v2) {
 		this.v1 = v1;
@@ -45,15 +54,14 @@ public class FractalCalculatorImpl implements FractalCalculator {
 			int[][] m = new int[xn][yn];
 			
 			double ai = a1;
-			double bi = b1;
 			for (int i = 0; i < xn; i++, ai += dx) {
+				double bi = b1;
 				for (int j = 0; j < yn; j++, bi += dy) {
 					
-					m[i][j] = 
+					m[i][j] = formula.calculate(ai, bi, maxIterations);
 				}
 				
 			}
-			
 			fractalMatrix = m;
 		}
 		return fractalMatrix;

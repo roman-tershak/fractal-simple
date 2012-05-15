@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import tr.fractal.painters.BlackAndWhitePainter;
 import tr.fractal.painters.impl.DefaultCoordsPainter;
 import tr.fractal.painters.impl.MandelbrotPlainFractalPainter;
 import tr.fractal.ui.PaintingArea;
@@ -35,7 +36,8 @@ public class Main extends JFrame {
     }
 	
 	private void initContentPane() {
-		panel = new PaintingArea(new MandelbrotPlainFractalPainter(new DefaultCoordsPainter()));
+//		panel = new PaintingArea(new MandelbrotPlainFractalPainter(new DefaultCoordsPainter()));
+		panel = new PaintingArea(new BlackAndWhitePainter());
 		getContentPane().add(panel);
 	}
 

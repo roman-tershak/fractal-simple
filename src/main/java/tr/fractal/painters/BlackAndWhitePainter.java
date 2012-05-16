@@ -3,13 +3,16 @@ package tr.fractal.painters;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import tr.fractal.math.Complex;
 import tr.fractal.math.FractalCalculator;
-import tr.fractal.math.FractalCalculatorImpl;
-import tr.fractal.math.MandelbrotFormula;
 import tr.fractal.ui.PaintingArea;
 
 public class BlackAndWhitePainter implements Painter {
+
+	private final FractalCalculator fractalCalculator;
+
+	public BlackAndWhitePainter(FractalCalculator fractalCalculator) {
+		this.fractalCalculator = fractalCalculator;
+	}
 
 	public void paintOn(PaintingArea paintingArea, Graphics g) {
 		
@@ -18,11 +21,8 @@ public class BlackAndWhitePainter implements Painter {
 		int height = paintingArea.getHeight();
 		int width = paintingArea.getWidth();
 		
-        FractalCalculator fractalCalculator = new FractalCalculatorImpl(new MandelbrotFormula());
-        fractalCalculator.setArea(new Complex(-2, -2), new Complex(2, 2));
         int granularity = (height < width ? height : width);
-		fractalCalculator.setGranularity(granularity , granularity);
-        fractalCalculator.setMaxIterations(1000);
+		fractalCalculator.setGranularity(granularity, granularity);
 
         int[][] m = fractalCalculator.calculate();
         

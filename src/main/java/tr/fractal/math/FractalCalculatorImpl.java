@@ -4,8 +4,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FractalCalculatorImpl implements FractalCalculator {
 
-	private Complex v1;
-	private Complex v2;
+	private Complex v1 = Complex.ZERO;
+	private Complex v2 = Complex.ZERO;
 	
 	private int xn;
 	private int yn;
@@ -19,26 +19,35 @@ public class FractalCalculatorImpl implements FractalCalculator {
 	
 	public FractalCalculatorImpl(FractalFormula formula) {
 		this.formula = formula;
-		
-		this.v1 = new Complex(-1, -1);
-		this.v2 = new Complex(1, 1);
 	}
 
 	public void setArea(Complex v1, Complex v2) {
-		this.v1 = v1;
-		this.v2 = v2;
-		recalculate.set(true);
+		if (!this.v1.equals(v1)) {
+			this.v1 = v1;
+			this.recalculate.set(true);
+		}
+		if (!this.v2.equals(v2)) {
+			this.v2 = v2;
+			this.recalculate.set(true);
+		}
 	}
 
 	public void setGranularity(int xn, int yn) {
-		this.xn = xn;
-		this.yn = yn;
-		recalculate.set(true);
+		if (this.xn != xn) {
+			this.xn = xn;
+			this.recalculate.set(true);
+		}
+		if (this.yn != yn) {
+			this.yn = yn;
+			this.recalculate.set(true);
+		}
 	}
 
 	public void setMaxIterations(int maxIterations) {
-		this.maxIterations = maxIterations;
-		recalculate.set(true);
+		if (this.maxIterations != maxIterations) {
+			this.maxIterations = maxIterations;
+			recalculate.set(true);
+		}
 	}
 
 	public int[][] calculate() {

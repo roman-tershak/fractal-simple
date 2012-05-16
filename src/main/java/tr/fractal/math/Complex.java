@@ -1,7 +1,9 @@
 package tr.fractal.math;
 
-public class Complex {
+public final class Complex {
 
+	public static final Complex ZERO = new Complex(0, 0);
+	
 	private final double a;
 	private final double b;
 
@@ -37,4 +39,32 @@ public class Complex {
 	public double getB() {
 		return b;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(a);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(b);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		if (this == obj)
+			return true;
+		Complex other = (Complex) obj;
+		if (Double.doubleToLongBits(a) != Double.doubleToLongBits(other.a))
+			return false;
+		if (Double.doubleToLongBits(b) != Double.doubleToLongBits(other.b))
+			return false;
+		return true;
+	}
+	
+	
 }

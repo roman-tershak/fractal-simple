@@ -35,6 +35,10 @@ public class FractalCalculatorImpl implements FractalCalculator {
 			this.recalculate.set(true);
 		}
 	}
+	
+	public void setArea(ComplexVector vector) {
+		setArea(vector.getV1(), vector.getV2());
+	}
 
 	public void setGranularity(int xn, int yn) {
 		if (this.xn != xn) {
@@ -47,6 +51,9 @@ public class FractalCalculatorImpl implements FractalCalculator {
 		}
 	}
 
+	public int getMaxIterations() {
+		return maxIterations;
+	}
 	public void setMaxIterations(int maxIterations) {
 		if (this.maxIterations != maxIterations) {
 			this.maxIterations = maxIterations;

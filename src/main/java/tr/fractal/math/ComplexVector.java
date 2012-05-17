@@ -18,11 +18,29 @@ public class ComplexVector {
 		return v2;
 	}
 
+	public double getA() {
+		return v2.getA() - v1.getA();
+	}
+
+	public double getB() {
+		return v2.getB() - v1.getB();
+	}
+	
 	public ComplexVector mul(double d) {
 		double da = v2.getA() - v1.getA();
 		double db = v2.getB() - v1.getB();
 		
 		return new ComplexVector(v1, new Complex(v1.getA() + da * d, v1.getB() + db * d));
+	}
+	
+	public ComplexVector add(Complex c) {
+		return new ComplexVector(v1.add(c), v2.add(c));
+	}
+
+	public double getMod() {
+		double da = v2.getA() - v1.getA();
+		double db = v2.getB() - v1.getB();
+		return Math.sqrt(da * da + db * db);
 	}
 
 	@Override

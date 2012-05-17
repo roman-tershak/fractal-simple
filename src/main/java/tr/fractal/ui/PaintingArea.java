@@ -10,14 +10,18 @@ import tr.fractal.painters.Painter;
 public class PaintingArea extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private final Painter painter;
+	private Painter painter;
 	
-	public PaintingArea(Painter painter) {
+	public PaintingArea() {
+	}
+	
+	public void setPainter(Painter painter) {
 		this.painter = painter;
+		painter.setPaintArea(this);
 	}
 	
 	@Override
 	protected void paintChildren(Graphics g) {
-		painter.paintOn(this, g);
+		painter.paint(g);
 	}
 }

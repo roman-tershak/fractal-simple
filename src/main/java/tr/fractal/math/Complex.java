@@ -65,6 +65,9 @@ public final class Complex {
 			return false;
 		return true;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Complex [a=" + a + ", b=" + b + "]";
+	}
 }

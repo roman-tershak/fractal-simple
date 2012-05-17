@@ -21,6 +21,10 @@ public class FractalCalculatorImpl implements FractalCalculator {
 		this.formula = formula;
 	}
 
+	public ComplexVector getArea() {
+		return new ComplexVector(v1, v2);
+	}
+	
 	public void setArea(Complex v1, Complex v2) {
 		if (!this.v1.equals(v1)) {
 			this.v1 = v1;

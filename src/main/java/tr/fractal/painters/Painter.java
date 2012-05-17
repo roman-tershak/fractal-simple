@@ -2,10 +2,12 @@ package tr.fractal.painters;
 
 import java.awt.Graphics;
 
-import tr.fractal.ui.PaintingArea;
+import javax.swing.JPanel;
 
 
 public interface Painter {
+	
+	public void setPaintArea(JPanel jPanel);
 
-	public void paintOn(PaintingArea paintingArea, Graphics g);
+	public void paint(Graphics g);
 }

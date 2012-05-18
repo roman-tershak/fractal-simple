@@ -5,6 +5,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import tr.fractal.math.Complex;
 import tr.fractal.math.ComplexVector;
@@ -18,6 +20,8 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 	private final PaintingArea paintingArea;
 	private final FractalCalculator fractalCalculator;
 
+	private Timer timer;
+
 	public EventProcessor(Container contentPane, PaintingArea paintingArea, 
 			FractalCalculator fractalCalculator) {
 		this.contentPane = contentPane;
@@ -26,9 +30,44 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
+		final int mx = e.getX();
+		final int my = e.getY();
 		
-		int mx = e.getX();
-		int my = e.getY();
+		final double ratio;
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			ratio = 0.95;
+		} else {
+			ratio = 1.05;
+		}
+		
+		if (timer != null) {
+			timer.cancel();
+		}
+		
+		timer = new Timer("", true);
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				zoomInOut(mx, my, ratio);
+			}
+		}, 100, 100);
+		System.out.println("Scheduled");
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		if (timer != null) {
+			timer.cancel();
+			System.out.println("Cancelled");
+		}
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+	}
+	
+	private void zoomInOut(int mx, int my, double ratio) {
+		
+		System.out.println("Zoomed");
 		
 		Complex v1 = fractalCalculator.getArea().getV1();
 		Complex v2 = fractalCalculator.getArea().getV2();
@@ -47,24 +86,12 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 		ComplexVector vect1new;
 		ComplexVector vect2new;
 		
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			vect1new = vect1.mul(0.95);
-			vect2new = vect2.mul(0.95);
-		} else {
-			vect1new = vect1.mul(1.05);
-			vect2new = vect2.mul(1.05);
-		}
+		vect1new = vect1.mul(ratio);
+		vect2new = vect2.mul(ratio);
 		
 		fractalCalculator.setArea(vect1new.getV2(), vect2new.getV2());
 		
 		contentPane.repaint();
-	}
-
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
 	}
 
 	public void keyTyped(KeyEvent e) {

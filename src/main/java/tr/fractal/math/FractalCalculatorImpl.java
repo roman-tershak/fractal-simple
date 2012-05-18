@@ -1,6 +1,5 @@
 package tr.fractal.math;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FractalCalculatorImpl implements FractalCalculator {
 
@@ -12,7 +11,7 @@ public class FractalCalculatorImpl implements FractalCalculator {
 	
 	private int maxIterations;
 	
-	private final AtomicBoolean recalculate = new AtomicBoolean(true);
+	private boolean recalculate = true;
 	private int[][] fractalMatrix;
 	private FractalFormula formula;
 
@@ -25,44 +24,51 @@ public class FractalCalculatorImpl implements FractalCalculator {
 		return new ComplexVector(v1, v2);
 	}
 	
-	public void setArea(Complex v1, Complex v2) {
+	public synchronized void setArea(Complex v1, Complex v2) {
 		if (!this.v1.equals(v1)) {
 			this.v1 = v1;
-			this.recalculate.set(true);
+			this.recalculate = true;
 		}
 		if (!this.v2.equals(v2)) {
 			this.v2 = v2;
-			this.recalculate.set(true);
+			this.recalculate = true;
 		}
 	}
 	
-	public void setArea(ComplexVector vector) {
+	public synchronized void setArea(ComplexVector vector) {
 		setArea(vector.getV1(), vector.getV2());
 	}
 
-	public void setGranularity(int xn, int yn) {
+	public synchronized void setGranularity(int xn, int yn) {
+		boolean recalc = false;
 		if (this.xn != xn) {
 			this.xn = xn;
-			this.recalculate.set(true);
+			recalc = true;
 		}
 		if (this.yn != yn) {
 			this.yn = yn;
-			this.recalculate.set(true);
+			recalc = true;
+		}
+		if (recalc) {
+			fractalMatrix = new int[xn][yn];
+			recalculate = true;
 		}
 	}
 
 	public int getMaxIterations() {
 		return maxIterations;
 	}
-	public void setMaxIterations(int maxIterations) {
+	public synchronized void setMaxIterations(int maxIterations) {
 		if (this.maxIterations != maxIterations) {
 			this.maxIterations = maxIterations;
-			recalculate.set(true);
+			recalculate = true;
 		}
 	}
 
-	public int[][] calculate() {
-		if (recalculate.compareAndSet(true, false)) {
+	public synchronized int[][] calculate() {
+		if (recalculate) {
+			recalculate = false;
+			
 			double a1 = v1.getA();
 			double b1 = v1.getB();
 			double a2 = v2.getA();
@@ -71,18 +77,15 @@ public class FractalCalculatorImpl implements FractalCalculator {
 			double dx = (a2 - a1) / xn;
 			double dy = (b2 - b1) / yn;
 			
-			int[][] m = new int[xn][yn];
-			
 			double ai = a1;
 			for (int i = 0; i < xn; i++, ai += dx) {
 				double bi = b1;
 				for (int j = 0; j < yn; j++, bi += dy) {
 					
-					m[i][j] = formula.calculate(ai, bi, maxIterations);
+					fractalMatrix[i][j] = formula.calculate(ai, bi, maxIterations);
 				}
 				
 			}
-			fractalMatrix = m;
 		}
 		return fractalMatrix;
 	}

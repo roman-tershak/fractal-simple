@@ -58,7 +58,7 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 		int my = e.getY();
 		
 		int n = fractalCalculator.getMatrixItem(mx, my);
-		paintingArea.setToolTipText("" + n);
+		System.out.println("" + n);
 	}
 
 	private void doZooming(MouseEvent e) {

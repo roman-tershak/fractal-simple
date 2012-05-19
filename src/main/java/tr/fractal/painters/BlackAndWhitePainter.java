@@ -5,9 +5,9 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import tr.fractal.FractalCalculator;
 import tr.fractal.math.Complex;
 import tr.fractal.math.ComplexVector;
-import tr.fractal.math.FractalCalculator;
 
 public class BlackAndWhitePainter implements Painter {
 

@@ -1,4 +1,7 @@
-package tr.fractal.math;
+package tr.fractal;
+
+import tr.fractal.math.Complex;
+import tr.fractal.math.ComplexVector;
 
 public interface FractalCalculator {
 

@@ -3,7 +3,7 @@ package tr.fractal.painters;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import tr.fractal.math.FractalCalculator;
+import tr.fractal.FractalCalculator;
 
 public class ColoredPainter extends BlackAndWhitePainter {
 

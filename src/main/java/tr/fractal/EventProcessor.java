@@ -10,7 +10,6 @@ import java.util.TimerTask;
 
 import tr.fractal.math.Complex;
 import tr.fractal.math.ComplexVector;
-import tr.fractal.math.FractalCalculator;
 import tr.fractal.ui.PaintingArea;
 
 public class EventProcessor extends MouseAdapter implements KeyListener {
@@ -22,6 +21,8 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 
 	private Timer timer;
 
+	private double zoomingRatio;
+
 	public EventProcessor(Container contentPane, PaintingArea paintingArea, 
 			FractalCalculator fractalCalculator) {
 		this.contentPane = contentPane;
@@ -30,44 +31,45 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			zoomingRatio = 0.95;
+		} else {
+			zoomingRatio = 1.05;
+		}
+		doZooming(e);
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		doZooming(e);
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		stopZooming();
+	}
+
+	private void doZooming(MouseEvent e) {
 		final int mx = e.getX();
 		final int my = e.getY();
 		
-		final double ratio;
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			ratio = 0.95;
-		} else {
-			ratio = 1.05;
-		}
-		
-		if (timer != null) {
-			timer.cancel();
-		}
+		stopZooming();
 		
 		timer = new Timer("", true);
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				zoomInOut(mx, my, ratio);
+				zoomInOut(mx, my, zoomingRatio);
 			}
 		}, 100, 100);
-		System.out.println("Scheduled");
 	}
 
-	public void mouseReleased(MouseEvent e) {
+	private void stopZooming() {
 		if (timer != null) {
 			timer.cancel();
-			System.out.println("Cancelled");
 		}
 	}
-	
-	@Override
-	public void mouseDragged(MouseEvent e) {
-	}
-	
+
 	private void zoomInOut(int mx, int my, double ratio) {
-		
-		System.out.println("Zoomed");
 		
 		Complex v1 = fractalCalculator.getArea().getV1();
 		Complex v2 = fractalCalculator.getArea().getV2();
@@ -80,14 +82,8 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 		
 		Complex vc = new Complex(v1.getA() + mx * xr, v1.getB() + (height - my) * yr);
 		
-		ComplexVector vect1 = new ComplexVector(vc, v1);
-		ComplexVector vect2 = new ComplexVector(vc, v2);
-		
-		ComplexVector vect1new;
-		ComplexVector vect2new;
-		
-		vect1new = vect1.mul(ratio);
-		vect2new = vect2.mul(ratio);
+		ComplexVector vect1new = new ComplexVector(vc, v1).mul(ratio);
+		ComplexVector vect2new = new ComplexVector(vc, v2).mul(ratio);
 		
 		fractalCalculator.setArea(vect1new.getV2(), vect2new.getV2());
 		

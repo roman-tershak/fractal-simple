@@ -7,8 +7,6 @@ import java.awt.event.MouseAdapter;
 import javax.swing.JFrame;
 
 import tr.fractal.math.Complex;
-import tr.fractal.math.FractalCalculator;
-import tr.fractal.math.FractalCalculatorImpl;
 import tr.fractal.math.MandelbrotFormula;
 import tr.fractal.painters.BlackAndWhitePainter;
 import tr.fractal.painters.ColoredPainter;

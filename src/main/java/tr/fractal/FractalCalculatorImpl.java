@@ -94,4 +94,7 @@ public class FractalCalculatorImpl implements FractalCalculator {
 		return fractalMatrix;
 	}
 
+	public int getMatrixItem(int mx, int my) {
+		return fractalMatrix[mx][my];
+	}
 }

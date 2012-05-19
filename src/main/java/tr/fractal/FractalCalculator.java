@@ -18,4 +18,6 @@ public interface FractalCalculator {
 	public void setMaxIterations(int maxIterations);
 	
 	public int[][] calculate();
+
+	public int getMatrixItem(int mx, int my);
 }

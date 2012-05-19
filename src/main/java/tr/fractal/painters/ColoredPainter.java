@@ -15,13 +15,10 @@ public class ColoredPainter extends BlackAndWhitePainter {
 		super(fractalCalculator);
 	}
 
-	public void setMaxIterations(int maxIterations) {
-		ratio = MAX_RGB_COLOR_INT / (double) maxIterations;
-	}
-	
 	@Override
 	protected void drawFractalPoint(Graphics2D g2d, int i, int j, int n) {
-		int rgb = MAX_RGB_COLOR_INT - (int) (n * ratio);
+//		int rgb = MAX_RGB_COLOR_INT - (int) (n * ratio);
+		int rgb = n * 10;
 		rgb = rgb < 0 ? 0 : rgb;
 		g2d.setColor(new Color(rgb ));
 		g2d.drawLine(i, j, i, j);

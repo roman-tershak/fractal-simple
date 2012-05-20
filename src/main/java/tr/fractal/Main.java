@@ -1,14 +1,18 @@
 package tr.fractal;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
+import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import tr.fractal.math.Complex;
 import tr.fractal.math.MandelbrotFormula;
-import tr.fractal.painters.BlackAndWhitePainter;
 import tr.fractal.painters.ColoredPainter;
 import tr.fractal.ui.PaintingArea;
 
@@ -55,7 +59,23 @@ public class Main extends JFrame {
 //		paintingArea.setPainter(new BlackAndWhitePainter(fractalCalculator));
 		paintingArea.setPainter(new ColoredPainter(fractalCalculator));
 		
-		getContentPane().add(paintingArea);
+		getContentPane().add(paintingArea, BorderLayout.CENTER);
+		
+        JPanel statusBar = new JPanel(new GridLayout(1, 3));
+        statusBar.setBackground(Color.LIGHT_GRAY);
+        statusBar.setBorder(BorderFactory.createLoweredBevelBorder());
+        
+        JLabel statusAreaSize = new JLabel(fractalCalculator.getArea().toShortString());
+		statusBar.add("statusAreaSize", statusAreaSize);
+		
+		JLabel statusMaxIter = new JLabel(String.valueOf(fractalCalculator.getMaxIterations()));
+		statusBar.add("statusMaxIter", statusMaxIter);
+        
+		JLabel statusCurrIter = new JLabel();
+		statusBar.add("statusCurrIter", statusCurrIter);
+		
+        getContentPane().add(statusBar, BorderLayout.SOUTH);
+
 	}
 
 	private void initEventSubsystem() {
@@ -63,8 +83,8 @@ public class Main extends JFrame {
         contentPane.setFocusable(true);
         
         EventProcessor eventProcessor = new EventProcessor(contentPane, paintingArea, fractalCalculator);
-		contentPane.addMouseListener(eventProcessor);
-        contentPane.addMouseMotionListener(eventProcessor);
+		paintingArea.addMouseListener(eventProcessor);
+        paintingArea.addMouseMotionListener(eventProcessor);
 //        contentPane.addMouseWheelListener(eventAdapter);
         
         contentPane.addKeyListener(eventProcessor);

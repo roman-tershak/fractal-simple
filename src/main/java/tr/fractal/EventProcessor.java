@@ -1,5 +1,6 @@
 package tr.fractal;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -7,6 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.swing.JLabel;
 
 import tr.fractal.math.Complex;
 import tr.fractal.math.ComplexVector;
@@ -23,11 +26,22 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 
 	private double zoomingRatio;
 
+	private JLabel statusAreaSize;
+
+	private JLabel statusMaxIter;
+
+	private JLabel statusCurrIter;
+
 	public EventProcessor(Container contentPane, PaintingArea paintingArea, 
 			FractalCalculator fractalCalculator) {
 		this.contentPane = contentPane;
 		this.paintingArea = paintingArea;
 		this.fractalCalculator = fractalCalculator;
+		
+		Container container = (Container) contentPane.getComponent(1);
+		statusAreaSize = (JLabel) container.getComponent(0);
+		statusMaxIter = (JLabel) container.getComponent(1);
+		statusCurrIter = (JLabel) container.getComponent(2);
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -42,23 +56,24 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		System.out.println("mouseDragged");
+//		System.out.println("mouseDragged");
 		doZooming(e);
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		System.out.println("mouseReleased");
+//		System.out.println("mouseReleased");
 		stopZooming();
 	}
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		System.out.println("mouseMoved");
+//		System.out.println("mouseMoved");
 		int mx = e.getX();
-		int my = e.getY();
+		int my = paintingArea.getHeight() - e.getY();
 		
 		int n = fractalCalculator.getMatrixItem(mx, my);
-		System.out.println("" + n);
+		statusCurrIter.setText(String.valueOf(n));
+//		System.out.println("" + n);
 	}
 
 	private void doZooming(MouseEvent e) {
@@ -92,7 +107,10 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 		ComplexVector vect1new = new ComplexVector(vc, v1).mul(ratio);
 		ComplexVector vect2new = new ComplexVector(vc, v2).mul(ratio);
 		
-		fractalCalculator.setArea(vect1new.getV2(), vect2new.getV2());
+		ComplexVector vectNew = new ComplexVector(vect1new.getV2(), vect2new.getV2());
+		fractalCalculator.setArea(vectNew);
+		
+		statusAreaSize.setText(vectNew.toShortString());
 		
 		contentPane.repaint();
 	}
@@ -113,15 +131,20 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 
 	public void keyTyped(KeyEvent e) {
 		char keyChar = e.getKeyChar();
+		int currMaxIter = fractalCalculator.getMaxIterations();
+		int nextMaxIter = currMaxIter;
 		switch (keyChar) {
 		case '<':
-			fractalCalculator.setMaxIterations((int) (fractalCalculator.getMaxIterations() * 0.95));
-			contentPane.repaint();
+			nextMaxIter = (int) (currMaxIter * 0.95);
 			break;
 		case '>':
-			fractalCalculator.setMaxIterations((int) (fractalCalculator.getMaxIterations() * 1.05));
-			contentPane.repaint();
+			nextMaxIter = (int) (currMaxIter * 1.05);
 			break;
+		}
+		if (nextMaxIter != currMaxIter) {
+			fractalCalculator.setMaxIterations(nextMaxIter);
+			statusMaxIter.setText(String.valueOf(nextMaxIter));
+			contentPane.repaint();
 		}
 	}
 
@@ -149,7 +172,9 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 	private void moveArea(double a, double b) {
 		ComplexVector fractalArea = fractalCalculator.getArea();
 		double modulus = fractalArea.getMod();
-		fractalCalculator.setArea(fractalArea.add(new Complex(a * modulus, b * modulus)));
+		ComplexVector newVector = fractalArea.add(new Complex(a * modulus, b * modulus));
+		fractalCalculator.setArea(newVector);
+		statusAreaSize.setText(newVector.toShortString());
 		contentPane.repaint();
 	}
 }

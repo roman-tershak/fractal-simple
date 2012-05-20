@@ -45,6 +45,15 @@ public class ComplexVector {
 
 	@Override
 	public String toString() {
-		return "ComplexVector [v1=" + v1 + ", v2=" + v2 + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append("ComplexVector [v1=").append(v1).append(", v2=").append(v2).append("]");
+		return sb.toString();
+	}
+
+	public String toShortString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(v1.getA()).append(", ").append(v1.getB()).append(" -> ");
+		sb.append(v2.getA()).append(", ").append(v2.getB());
+		return sb.toString();
 	}
 }

@@ -1,14 +1,10 @@
 package tr.fractal;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import tr.fractal.math.Complex;
@@ -61,19 +57,8 @@ public class Main extends JFrame {
 		
 		getContentPane().add(paintingArea, BorderLayout.CENTER);
 		
-        JPanel statusBar = new JPanel(new GridLayout(1, 3));
-        statusBar.setBackground(Color.LIGHT_GRAY);
-        statusBar.setBorder(BorderFactory.createLoweredBevelBorder());
+		JPanel statusBar = new StatusBar(fractalCalculator);
         
-        JLabel statusAreaSize = new JLabel(fractalCalculator.getArea().toShortString());
-		statusBar.add("statusAreaSize", statusAreaSize);
-		
-		JLabel statusMaxIter = new JLabel(String.valueOf(fractalCalculator.getMaxIterations()));
-		statusBar.add("statusMaxIter", statusMaxIter);
-        
-		JLabel statusCurrIter = new JLabel();
-		statusBar.add("statusCurrIter", statusCurrIter);
-		
         getContentPane().add(statusBar, BorderLayout.SOUTH);
 
 	}

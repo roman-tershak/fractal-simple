@@ -11,6 +11,11 @@ public class StatusBar extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private final FractalCalculator fractalCalculator;
+
+	private JLabel statusText;
+
+	private int currMy;
+	private int currMx;
 	
 	StatusBar(FractalCalculator fractalCalculator) {
 		super(new GridLayout(1, 3));
@@ -20,13 +25,28 @@ public class StatusBar extends JPanel {
 		this.setBackground(Color.LIGHT_GRAY);
 		this.setBorder(BorderFactory.createLoweredBevelBorder());
 		
-		JLabel statusAreaSize = new JLabel(fractalCalculator.getArea().toShortString());
-		this.add("statusAreaSize", statusAreaSize);
+		statusText = new JLabel();
+		this.add(statusText);
 		
-		JLabel statusMaxIter = new JLabel(String.valueOf(fractalCalculator.getMaxIterations()));
-		this.add("statusMaxIter", statusMaxIter);
+		updateStatus();
+	}
+
+	public void currentItem(int mx, int my) {
+		this.currMx = mx;
+		this.currMy = my;
 		
-		JLabel statusCurrIter = new JLabel();
-		this.add("statusCurrIter", statusCurrIter);
+		updateStatus();
+	}
+
+	public void fractalChanged() {
+		updateStatus();
+	}
+	
+	private void updateStatus() {
+		String areaTxt = fractalCalculator.getArea().toShortString();
+		int maxIterations = fractalCalculator.getMaxIterations();
+		int currN = fractalCalculator.getMatrixItem(currMx, currMy);
+		
+		statusText.setText(areaTxt + "    max iterations = " + maxIterations + "    " + currN);
 	}
 }

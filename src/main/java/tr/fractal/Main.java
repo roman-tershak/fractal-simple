@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import tr.fractal.math.Complex;
 import tr.fractal.math.MandelbrotFormula;
@@ -24,9 +23,11 @@ public class Main extends JFrame {
     public static final double v2b = -v1b;
     
     protected static final Dimension FRAME_SIZE = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
-	private PaintingArea paintingArea;
 
-	private FractalCalculator fractalCalculator;
+    private PaintingArea paintingArea;
+    private StatusBar statusBar;
+
+    private FractalCalculator fractalCalculator;
     
 	public Main() {
 		super();
@@ -54,11 +55,9 @@ public class Main extends JFrame {
 		paintingArea = new PaintingArea();
 //		paintingArea.setPainter(new BlackAndWhitePainter(fractalCalculator));
 		paintingArea.setPainter(new ColoredPainter(fractalCalculator));
-		
 		getContentPane().add(paintingArea, BorderLayout.CENTER);
 		
-		JPanel statusBar = new StatusBar(fractalCalculator);
-        
+		statusBar = new StatusBar(fractalCalculator);
         getContentPane().add(statusBar, BorderLayout.SOUTH);
 
 	}
@@ -67,7 +66,8 @@ public class Main extends JFrame {
         final Container contentPane = getContentPane();
         contentPane.setFocusable(true);
         
-        EventProcessor eventProcessor = new EventProcessor(contentPane, paintingArea, fractalCalculator);
+        EventProcessor eventProcessor = new EventProcessor(
+        		contentPane, paintingArea, fractalCalculator, statusBar);
 		paintingArea.addMouseListener(eventProcessor);
         paintingArea.addMouseMotionListener(eventProcessor);
 //        contentPane.addMouseWheelListener(eventAdapter);

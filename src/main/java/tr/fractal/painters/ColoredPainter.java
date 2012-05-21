@@ -16,14 +16,14 @@ public class ColoredPainter extends BlackAndWhitePainter {
 		if (n == Integer.MAX_VALUE) {
 			g2d.setColor(Color.BLACK);
 		} else {
-			float h = 0.66F - (float) Math.sqrt((double) n / 10000);
+			float h = 0.69F - (float) Math.sqrt((double) n / 10000);
 			float s;
 			if (n <= 1) {
 				s = 1;
 			} else {
 				s = (float) 1 / n + 0.5F;
 			}
-			float b = (float) ((float) Math.atan(n) / Math.PI * 1.3);
+			float b = (float) ((float) Math.atan((double) n / 6) / Math.PI * 1.3);
 			g2d.setColor(Color.getHSBColor(h, s, b));
 		}
 		g2d.drawLine(i, j, i, j);

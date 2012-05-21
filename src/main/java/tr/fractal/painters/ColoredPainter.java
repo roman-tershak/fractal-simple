@@ -60,13 +60,13 @@ public class ColoredPainter extends BlackAndWhitePainter {
 			} else if (n >= 120 && n < 360) {
 				double ratio = Math.sqrt((double) (n - 119) / 240);
 				r = (int) (ratio * 224);
-				g = 222 - (int) (0.1 * (double) r);
-				b = 222 - (int) (0.2 * (double) r);
-			} else {
-				double ratio = Math.sqrt((double) (n - 119) / 480);
-				r = (int) (ratio * 224);
 				g = 222 - (int) (0.2 * (double) r);
-				b = 222 - (int) (0.2 * (double) r);
+				b = 200 - (int) (0.1 * (double) r);
+			} else {
+				double ratio = Math.sqrt((double) (n - 359) / 480);
+				r = (int) (ratio * 224);
+				g = 178 - (int) (0.2 * (double) r);
+				b = 178 - (int) (0.2 * (double) r);
 			}
 			rgb = r << 16 | g << 8 | b;
 			color = new Color(rgb);

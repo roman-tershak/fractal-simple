@@ -43,22 +43,30 @@ public class ColoredPainter extends BlackAndWhitePainter {
 	static Color getRGBColor(int n) {
 		Color color;
 		int rgb;
-		int r = 0, g = 0, b = 0;
 		if (n == Integer.MAX_VALUE) {
 			color = Color.BLACK;
 		} else {
+			int r, g, b;
 			if (n < 40) {
 				double ratio = Math.sqrt((double) n / 40);
 				b = (int) (ratio * 224);
+				g = 0;
+				r = 0;
 			} else if (n >= 40 && n < 120) {
-				double ratio = Math.sqrt((double) (n - 39) / 120);
+				double ratio = Math.sqrt((double) (n - 39) / 80);
 				g = (int) (ratio * 224);
 				b = 222 - (int) (0.1 * (double) g);
-			} else {
-				double ratio = Math.sqrt((double) (n - 119) / 1000);
+				r = 0;
+			} else if (n >= 120 && n < 360) {
+				double ratio = Math.sqrt((double) (n - 119) / 240);
 				r = (int) (ratio * 224);
+				g = 222 - (int) (0.1 * (double) r);
 				b = 222 - (int) (0.2 * (double) r);
-				g = 178 - (int) (0.1 * (double) r);
+			} else {
+				double ratio = Math.sqrt((double) (n - 119) / 480);
+				r = (int) (ratio * 224);
+				g = 222 - (int) (0.2 * (double) r);
+				b = 222 - (int) (0.2 * (double) r);
 			}
 			rgb = r << 16 | g << 8 | b;
 			color = new Color(rgb);

@@ -7,6 +7,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import tr.fractal.painters.ColoredPainter;
+
 public class StatusBar extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
@@ -47,16 +49,7 @@ public class StatusBar extends JPanel {
 		int maxIterations = fractalCalculator.getMaxIterations();
 		int currN = fractalCalculator.getMatrixItem(currMx, currMy);
 		
-		float h = 0.66F - (float) Math.sqrt((double) currN / 10000);
-		float s;
-		if (currN <= 1) {
-			s = 1;
-		} else {
-			s = (float) 1 / currN + 0.5F;
-		}
-		float b = (float) ((float) Math.atan(currN) / Math.PI * 1.3);
-		
-		statusText.setText(areaTxt + "    max iterations = " + maxIterations + "    " + currN +
-				"   h=" + h + "   s=" + s + "   b=" + b);
+		statusText.setText(areaTxt + "    max iterations = " + maxIterations + "    " + currN + 
+				"   color = " + ColoredPainter.getColor(currN));
 	}
 }

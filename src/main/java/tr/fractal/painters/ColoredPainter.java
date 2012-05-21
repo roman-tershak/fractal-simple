@@ -62,11 +62,16 @@ public class ColoredPainter extends BlackAndWhitePainter {
 				r = (int) (ratio * 224);
 				g = 222 - (int) (0.2 * (double) r);
 				b = 200 - (int) (0.1 * (double) r);
+			} else if (n >= 360 && n < 1080) {
+				double ratio = Math.sqrt((double) (n - 359) / 720);
+				r = 16 + (int) (ratio * 224);
+				g = 108 - (int) (0.2 * (double) r);
+				b = 146 - (int) (0.4 * (double) r);
 			} else {
-				double ratio = Math.sqrt((double) (n - 359) / 480);
-				r = (int) (ratio * 224);
-				g = 178 - (int) (0.2 * (double) r);
-				b = 178 - (int) (0.2 * (double) r);
+				double ratio = Math.sqrt((double) (n - 1079) / 2160);
+				r = 32 + ((int) (ratio * 224));
+				g = 100 - (int) (0.6 * (double) r);
+				b = 80 - (int) (0.2 * (double) r);
 			}
 			rgb = r << 16 | g << 8 | b;
 			color = new Color(rgb);

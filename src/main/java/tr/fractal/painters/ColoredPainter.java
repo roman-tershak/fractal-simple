@@ -13,26 +13,18 @@ public class ColoredPainter extends BlackAndWhitePainter {
 
 	@Override
 	protected void drawFractalPoint(Graphics2D g2d, int i, int j, int n) {
-		int rgb;
-		int r = 0, g = 0, b = 0;
 		if (n == Integer.MAX_VALUE) {
 			g2d.setColor(Color.BLACK);
 		} else {
-			if (n < 40) {
-				double ratio = Math.sqrt((double) n / 64);
-				b = (int) (ratio * 255);
-			} else if (n > 40 && n < 1000) {
-				double ratio = Math.sqrt((double) n / 1000);
-				b = 64;
-				g = (int) (ratio * 255);
+			float h = 0.66F - (float) Math.sqrt((double) n / 10000);
+			float s;
+			if (n <= 1) {
+				s = 1;
 			} else {
-				b = 32;
-				g = 64;
-				double ratio = Math.sqrt((double) n / 1000);
-				r = (int) (ratio * 255);
+				s = (float) 1 / n + 0.5F;
 			}
-			rgb = r << 16 | g << 8 | b;
-			g2d.setColor(new Color(rgb ));
+			float b = (float) ((float) Math.atan(n) / Math.PI * 1.3);
+			g2d.setColor(Color.getHSBColor(h, s, b));
 		}
 		g2d.drawLine(i, j, i, j);
 	}

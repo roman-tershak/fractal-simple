@@ -95,6 +95,10 @@ public class FractalCalculatorImpl implements FractalCalculator {
 	}
 
 	public int getMatrixItem(int mx, int my) {
-		return fractalMatrix[mx][my];
+		if (mx < 0 || my < 0 || mx >= xn || my >= yn) {
+			return 0;
+		} else {
+			return fractalMatrix[mx][my];
+		}
 	}
 }

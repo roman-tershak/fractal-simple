@@ -20,4 +20,12 @@ public class MandelbrotFormula implements FractalFormula {
 		}
 		return Integer.MAX_VALUE;
 	}
+	
+	public Complex calculateOneIteration(Complex... cs) {
+		return calculateOneIteration(cs[0], cs[1]);
+	}
+	
+	public Complex calculateOneIteration(Complex z, Complex c) {
+		return z.mul(z).add(c);
+	}
 }

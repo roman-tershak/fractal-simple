@@ -8,26 +8,24 @@ import javax.swing.JPanel;
 import tr.fractal.FractalCalculator;
 import tr.fractal.math.Complex;
 import tr.fractal.math.ComplexVector;
+import tr.fractal.ui.PaintingArea;
 
-public class BlackAndWhitePainter implements Painter {
+public class BlackAndWhitePainter extends AbstractPainter {
 
-	private final FractalCalculator fractalCalculator;
-	private final JPanel paintingArea;
-	
 	private int prevWidth;
 	private int prevHeight;
 	
-	public BlackAndWhitePainter(FractalCalculator fractalCalculator, JPanel paintingArea) {
-		this.fractalCalculator = fractalCalculator;
-		this.paintingArea = paintingArea;
+	public BlackAndWhitePainter(FractalCalculator fractalCalculator, PaintingArea paintingArea) {
+		super(fractalCalculator, paintingArea);
 	}
 	
+	@Override
 	public void paint(Graphics g) {
 
 		setFractalComplexArea();
-        int[][] m = fractalCalculator.calculate();
+        int[][] m = getFractalCalculator().calculate();
         
-        int height = paintingArea.getHeight();
+        int height = getPaintingArea().getHeight();
         
         for (int i = 0; i < m.length; i++) {
 			for (int j = 0; j < m[i].length; j++) {
@@ -43,8 +41,11 @@ public class BlackAndWhitePainter implements Painter {
 	}
 
 	protected void setFractalComplexArea() {
+		JPanel paintingArea = getPaintingArea();
 		int height = paintingArea.getHeight();
 		int width = paintingArea.getWidth();
+		
+		FractalCalculator fractalCalculator = getFractalCalculator();
 		
 		if (prevWidth != 0.0 && prevHeight != 0.0) {
 			double wratio = ((double) width) / prevWidth;

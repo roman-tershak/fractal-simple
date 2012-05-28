@@ -2,18 +2,17 @@ package tr.fractal.painters;
 
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
+import tr.fractal.FractalCalculator;
+import tr.fractal.ui.PaintingArea;
 
-public class FractalPointIterativePainter implements Painter {
+public class FractalPointIterativePainter extends AbstractPainter {
 
-	private JPanel panel;
-
-	public void setPaintPanel(JPanel panel) {
-		this.panel = panel;
+	public FractalPointIterativePainter(FractalCalculator fractalCalculator, PaintingArea paintingArea) {
+		super(fractalCalculator, paintingArea);
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		
 	}
-
 }

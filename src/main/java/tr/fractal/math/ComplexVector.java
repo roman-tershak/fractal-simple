@@ -48,15 +48,16 @@ public class ComplexVector {
 		return Math.sqrt(da * da + db * db);
 	}
 
-	public boolean contains(ComplexVector vector) {
+	public boolean areaContains(ComplexVector vector) {
 		
 		Complex ov1 = vector.getV1();
 		Complex ov2 = vector.getV2();
 		
-		if (contains(ov1) || contains(ov2)) {
+		if (areaContains(ov1) || areaContains(ov2)) {
 			return true;
 		} else {
 			initFrameVectors();
+			
 			if (left.intersect(vector) != null || top.intersect(vector) != null || 
 					right.intersect(vector) != null || bottom.intersect(vector) != null) {
 				return true;
@@ -66,7 +67,7 @@ public class ComplexVector {
 		}
 	}
 
-	public boolean contains(Complex complex) {
+	public boolean areaContains(Complex complex) {
 		double ca = complex.getA();
 		double cb = complex.getB();
 		
@@ -75,7 +76,9 @@ public class ComplexVector {
 		double a2 = getV2().getA();
 		double b2 = getV2().getB();
 		
-		if (a1 <= ca && ca <= a2 && b1 <= cb && cb <= b2) {
+		boolean cain = (a1 <= a2) ? (a1 <= ca && ca <= a2) : (a2 <= ca && ca <= a1); 
+		boolean cbin = (b1 <= b2) ? (b1 <= cb && cb <= b2) : (b2 <= cb && cb <= b1);
+		if (cain && cbin) {
 			return true;
 		} else {
 			return false;
@@ -83,8 +86,40 @@ public class ComplexVector {
 	}
 
 	public Complex intersect(ComplexVector vector) {
-		// TODO Auto-generated method stub
-		return null;
+		double a1 = getV1().getA();
+		double b1 = getV1().getB();
+		double a2 = getV2().getA();
+		double b2 = getV2().getB();
+		double a3 = vector.getV1().getA();
+		double b3 = vector.getV1().getB();
+		double a4 = vector.getV2().getA();
+		double b4 = vector.getV2().getB();
+		
+		double a12 = a1 - a2;
+		double b12 = b1 - b2;
+		double a34 = a3 - a4;
+		double b34 = b3 - b4;
+		
+		double d = a12*b34 - b12*a34;
+		
+		if (d < Complex.PRECISION) {
+			return null;
+		} else {
+			double ab12 = a1*b2 - b1*a2;
+			double ab34 = a3*b4 - b3*a4;
+			
+			double ax = (ab12*a34 - a12*ab34)/d;
+			double bx = (ab12*b34 - b12*ab34)/d;
+			
+			boolean ain = (a1 <= a2) ? (a1 <= ax && ax <= a2) : (a2 <= ax && ax <= a1);
+			boolean bin = (b1 <= b2) ? (b1 <= bx && bx <= b2) : (b2 <= bx && bx <= b1);
+			
+			if (ain && bin) {
+				return new Complex(ax, bx);
+			} else {
+				return null;
+			}
+		}
 	}
 
 	private void initFrameVectors() {

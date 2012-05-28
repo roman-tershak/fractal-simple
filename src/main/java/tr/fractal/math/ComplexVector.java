@@ -94,8 +94,8 @@ public class ComplexVector {
 	
 			left = new ComplexVector(v1, vlt);
 			top = new ComplexVector(vlt, v2);
-			right = new ComplexVector(v2, vrb);
-			bottom = new ComplexVector(vrb, v1);
+			bottom = new ComplexVector(v1, vrb);
+			right = new ComplexVector(vrb, v2);
 		}
 	}
 

@@ -3,12 +3,14 @@ package tr.fractal.painters;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import javax.swing.JPanel;
+
 import tr.fractal.FractalCalculator;
 
 public class ColoredPainter extends BlackAndWhitePainter {
 
-	public ColoredPainter(FractalCalculator fractalCalculator) {
-		super(fractalCalculator);
+	public ColoredPainter(FractalCalculator fractalCalculator, JPanel paintingArea) {
+		super(fractalCalculator, paintingArea);
 	}
 
 	@Override

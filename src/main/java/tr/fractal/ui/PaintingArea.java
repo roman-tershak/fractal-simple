@@ -17,7 +17,6 @@ public class PaintingArea extends JPanel {
 	
 	public void setPainter(Painter painter) {
 		this.painter = painter;
-		painter.setPaintArea(this);
 	}
 	
 	@Override

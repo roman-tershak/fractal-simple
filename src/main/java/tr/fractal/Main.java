@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import tr.fractal.math.Complex;
 import tr.fractal.math.MandelbrotFormula;
 import tr.fractal.painters.ColoredPainter;
+import tr.fractal.painters.Painter;
 import tr.fractal.ui.PaintingArea;
 
 public class Main extends JFrame {
@@ -54,7 +55,8 @@ public class Main extends JFrame {
 		
 		paintingArea = new PaintingArea();
 //		paintingArea.setPainter(new BlackAndWhitePainter(fractalCalculator));
-		paintingArea.setPainter(new ColoredPainter(fractalCalculator));
+		Painter painter = new ColoredPainter(fractalCalculator, paintingArea);
+		paintingArea.setPainter(painter);
 		getContentPane().add(paintingArea, BorderLayout.CENTER);
 		
 		statusBar = new StatusBar(fractalCalculator);

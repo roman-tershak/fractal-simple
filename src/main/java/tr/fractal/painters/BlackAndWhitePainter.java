@@ -12,25 +12,22 @@ import tr.fractal.math.ComplexVector;
 public class BlackAndWhitePainter implements Painter {
 
 	private final FractalCalculator fractalCalculator;
-	private JPanel panel;
+	private final JPanel paintingArea;
 	
 	private int prevWidth;
 	private int prevHeight;
 	
-	public BlackAndWhitePainter(FractalCalculator fractalCalculator) {
+	public BlackAndWhitePainter(FractalCalculator fractalCalculator, JPanel paintingArea) {
 		this.fractalCalculator = fractalCalculator;
+		this.paintingArea = paintingArea;
 	}
 	
-	public void setPaintArea(JPanel panel) {
-		this.panel = panel;
-	}
-
 	public void paint(Graphics g) {
 
-		setArea();
+		setFractalComplexArea();
         int[][] m = fractalCalculator.calculate();
         
-        int height = panel.getHeight();
+        int height = paintingArea.getHeight();
         
         for (int i = 0; i < m.length; i++) {
 			for (int j = 0; j < m[i].length; j++) {
@@ -45,9 +42,9 @@ public class BlackAndWhitePainter implements Painter {
 		}
 	}
 
-	protected void setArea() {
-		int height = panel.getHeight();
-		int width = panel.getWidth();
+	protected void setFractalComplexArea() {
+		int height = paintingArea.getHeight();
+		int width = paintingArea.getWidth();
 		
 		if (prevWidth != 0.0 && prevHeight != 0.0) {
 			double wratio = ((double) width) / prevWidth;

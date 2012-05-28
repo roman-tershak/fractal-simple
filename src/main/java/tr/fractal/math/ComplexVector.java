@@ -76,9 +76,9 @@ public class ComplexVector {
 		double a2 = getV2().getA();
 		double b2 = getV2().getB();
 		
-		boolean cain = (a1 <= a2) ? (a1 <= ca && ca <= a2) : (a2 <= ca && ca <= a1); 
-		boolean cbin = (b1 <= b2) ? (b1 <= cb && cb <= b2) : (b2 <= cb && cb <= b1);
-		if (cain && cbin) {
+		boolean caIn = (a1 <= a2) ? (a1 <= ca && ca <= a2) : (a2 <= ca && ca <= a1); 
+		boolean cbIn = (b1 <= b2) ? (b1 <= cb && cb <= b2) : (b2 <= cb && cb <= b1);
+		if (caIn && cbIn) {
 			return true;
 		} else {
 			return false;
@@ -111,14 +111,44 @@ public class ComplexVector {
 			double ax = (ab12*a34 - a12*ab34)/d;
 			double bx = (ab12*b34 - b12*ab34)/d;
 			
-			boolean ain = (a1 <= a2) ? (a1 <= ax && ax <= a2) : (a2 <= ax && ax <= a1);
-			boolean bin = (b1 <= b2) ? (b1 <= bx && bx <= b2) : (b2 <= bx && bx <= b1);
+			boolean aIn = (a1 <= a2) ? (a1 <= ax && ax <= a2) : (a2 <= ax && ax <= a1);
+			boolean bIn = (b1 <= b2) ? (b1 <= bx && bx <= b2) : (b2 <= bx && bx <= b1);
 			
-			if (ain && bin) {
+			if (aIn && bIn) {
 				return new Complex(ax, bx);
 			} else {
 				return null;
 			}
+		}
+	}
+	
+	public ComplexVector areaIntersect(ComplexVector vector) {
+		Complex ov1 = vector.getV1();
+		Complex ov2 = vector.getV2();
+		
+		boolean ov1In = areaContains(ov1);
+		boolean ov2In = areaContains(ov2);
+		
+		if (ov1In && ov2In) {
+			return vector;
+		} else if (ov1In) {
+			for (ComplexVector border : new ComplexVector[] {left, top, bottom, right}) {
+				Complex xv2 = border.intersect(vector);
+				if (xv2 != null) {
+					return new ComplexVector(ov1, xv2);
+				}
+			}
+			return new ComplexVector(ov1, ov1);
+		} else if (ov2In) {
+			for (ComplexVector border : new ComplexVector[] {left, top, bottom, right}) {
+				Complex xv1 = border.intersect(vector);
+				if (xv1 != null) {
+					return new ComplexVector(xv1, ov2);
+				}
+			}
+			return new ComplexVector(ov2, ov2);
+		} else {
+			return null;
 		}
 	}
 

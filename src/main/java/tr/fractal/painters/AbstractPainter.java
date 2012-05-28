@@ -2,8 +2,6 @@ package tr.fractal.painters;
 
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
-
 import tr.fractal.FractalCalculator;
 import tr.fractal.ui.PaintingArea;
 
@@ -21,7 +19,7 @@ public abstract class AbstractPainter implements Painter {
 		return fractalCalculator;
 	}
 	
-	public JPanel getPaintingArea() {
+	public PaintingArea getPaintingArea() {
 		return paintingArea;
 	}
 	

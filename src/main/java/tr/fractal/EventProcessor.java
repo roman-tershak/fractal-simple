@@ -10,6 +10,7 @@ import java.util.TimerTask;
 
 import tr.fractal.math.Complex;
 import tr.fractal.math.ComplexVector;
+import tr.fractal.painters.FractalPointIterativePainter;
 import tr.fractal.ui.PaintingArea;
 
 public class EventProcessor extends MouseAdapter implements KeyListener {
@@ -19,20 +20,25 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 	private final PaintingArea paintingArea;
 	private final FractalCalculator fractalCalculator;
 	private final StatusBar statusBar;
+	private final FractalPointIterativePainter fractalPointIterativePainter;
 
 	private Timer timer;
 
 	private double zoomingRatio;
 
 	public EventProcessor(Container contentPane, PaintingArea paintingArea, 
-			FractalCalculator fractalCalculator, StatusBar statusBar) {
+			FractalCalculator fractalCalculator, StatusBar statusBar, FractalPointIterativePainter fractalPointIterativePainter) {
 		this.contentPane = contentPane;
 		this.paintingArea = paintingArea;
 		this.fractalCalculator = fractalCalculator;
 		this.statusBar = statusBar;
+		this.fractalPointIterativePainter = fractalPointIterativePainter;
 	}
 
 	public void mousePressed(MouseEvent e) {
+		if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK) {
+			return;
+		}
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			zoomingRatio = 0.95;
 		} else {
@@ -43,13 +49,23 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-//		System.out.println("mouseDragged");
 		doZooming(e);
 	}
 
 	public void mouseReleased(MouseEvent e) {
-//		System.out.println("mouseReleased");
+		if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK) {
+			return;
+		}
 		stopZooming();
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK) {
+			fractalPointIterativePainter.setInitialPoint(convertFromPx(e.getX(), e.getY()));
+			
+			contentPane.repaint();
+		}
 	}
 	
 	@Override
@@ -123,6 +139,10 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 			break;
 		case '>':
 			nextMaxIter = (int) (currMaxIter * 1.05);
+			break;
+		case 'n':
+			fractalPointIterativePainter.calculateNextIteration();
+			contentPane.repaint();
 			break;
 		}
 		if (nextMaxIter != currMaxIter) {

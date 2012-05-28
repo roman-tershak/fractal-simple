@@ -31,13 +31,12 @@ public class FractalPointIterativePainter extends AbstractPainter {
 		if (trail.size() > 0) {
 			Graphics2D g2d = (Graphics2D) g;
 			
-			g2d.setColor(Color.GREEN);
+			g2d.setColor(new Color(30, 190, 220));
 			
 			ComplexVector area = getFractalCalculator().getArea();
 			PaintingArea paintingArea = getPaintingArea();
 			
 			Complex va1 = area.getV1();
-			Complex va2 = area.getV2();
 			
 			double aa = area.getA();
 			double ab = area.getB();
@@ -53,11 +52,11 @@ public class FractalPointIterativePainter extends AbstractPainter {
 					Complex v1 = vectorToPaint.getV1();
 					Complex v2 = vectorToPaint.getV2();
 					
-					int xi1 = (int) ((v1.getA() - va1.getA()) / aa * wratio);
-					int yi1 = height - (int) ((v1.getB() - va1.getB()) / ab * hratio);
+					int xi1 = (int) ((v1.getA() - va1.getA()) * wratio);
+					int yi1 = height - (int) ((v1.getB() - va1.getB()) * hratio);
 					
-					int xi2 = (int) ((va2.getA() - v2.getA()) / aa * wratio);
-					int yi2 = height - (int) ((va2.getB() - v2.getB()) / ab * hratio);
+					int xi2 = (int) ((v2.getA() - va1.getA()) * wratio);
+					int yi2 = height - (int) ((v2.getB() - va1.getB()) * hratio);
 					
 					g2d.drawLine(xi1, yi1, xi2, yi2);
 				}
@@ -66,6 +65,7 @@ public class FractalPointIterativePainter extends AbstractPainter {
 	}
 	
 	public void setInitialPoint(Complex init) {
+//		System.out.println(init);
 		this.init = init;
 		head = Complex.ZERO;
 		trail.clear();

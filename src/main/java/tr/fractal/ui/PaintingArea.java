@@ -1,6 +1,8 @@
 package tr.fractal.ui;
 
 import java.awt.Graphics;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -10,17 +12,19 @@ import tr.fractal.painters.Painter;
 public class PaintingArea extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private Painter painter;
+	private final List<Painter> painters = new LinkedList<Painter>();
 	
 	public PaintingArea() {
 	}
 	
-	public void setPainter(Painter painter) {
-		this.painter = painter;
-	}
-	
 	@Override
 	protected void paintChildren(Graphics g) {
-		painter.paint(g);
+		for (Painter painter : painters) {
+			painter.paint(g);
+		}
+	}
+
+	public void addPainter(Painter painter) {
+		painters.add(painter);
 	}
 }

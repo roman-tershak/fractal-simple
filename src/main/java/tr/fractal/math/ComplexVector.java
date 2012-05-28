@@ -102,7 +102,7 @@ public class ComplexVector {
 		
 		double d = a12*b34 - b12*a34;
 		
-		if (d < Complex.PRECISION) {
+		if (Math.abs(d) < Complex.PRECISION) {
 			return null;
 		} else {
 			double ab12 = a1*b2 - b1*a2;
@@ -132,16 +132,22 @@ public class ComplexVector {
 		if (ov1In && ov2In) {
 			return vector;
 		} else if (ov1In) {
-			for (ComplexVector border : new ComplexVector[] {left, top, bottom, right}) {
-				Complex xv2 = border.intersect(vector);
+			initFrameVectors();
+			
+			ComplexVector[] borders = new ComplexVector[] {left, top, bottom, right};
+			for (int i = 0; i < borders.length; i++) {
+				Complex xv2 = borders[i].intersect(vector);
 				if (xv2 != null) {
 					return new ComplexVector(ov1, xv2);
 				}
 			}
 			return new ComplexVector(ov1, ov1);
 		} else if (ov2In) {
-			for (ComplexVector border : new ComplexVector[] {left, top, bottom, right}) {
-				Complex xv1 = border.intersect(vector);
+			initFrameVectors();
+			
+			ComplexVector[] borders = new ComplexVector[] {left, top, bottom, right};
+			for (int i = 0; i < borders.length; i++) {
+				Complex xv1 = borders[i].intersect(vector);
 				if (xv1 != null) {
 					return new ComplexVector(xv1, ov2);
 				}

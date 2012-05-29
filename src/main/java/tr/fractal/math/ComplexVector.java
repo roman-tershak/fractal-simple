@@ -1,5 +1,10 @@
 package tr.fractal.math;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 public class ComplexVector {
 
 	private final Complex v1;
@@ -76,8 +81,18 @@ public class ComplexVector {
 		double a2 = getV2().getA();
 		double b2 = getV2().getB();
 		
-		boolean caIn = (a1 <= a2) ? (a1 <= ca && ca <= a2) : (a2 <= ca && ca <= a1); 
-		boolean cbIn = (b1 <= b2) ? (b1 <= cb && cb <= b2) : (b2 <= cb && cb <= b1);
+		boolean caIn;
+		if (a1 <= a2) {
+			caIn = (a1 - Complex.PRECISION <= ca && ca <= a2 + Complex.PRECISION);
+		} else {
+			caIn = (a2 - Complex.PRECISION <= ca && ca <= a1 + Complex.PRECISION);
+		}
+		boolean cbIn;
+		if (b1 <= b2) {
+			cbIn = (b1 - Complex.PRECISION <= cb && cb <= b2 + Complex.PRECISION);
+		} else {
+			cbIn = (b2 - Complex.PRECISION <= cb && cb <= b1 + Complex.PRECISION);
+		}
 		if (caIn && cbIn) {
 			return true;
 		} else {
@@ -108,14 +123,10 @@ public class ComplexVector {
 			double ab12 = a1*b2 - b1*a2;
 			double ab34 = a3*b4 - b3*a4;
 			
-			double ax = (ab12*a34 - a12*ab34)/d;
-			double bx = (ab12*b34 - b12*ab34)/d;
+			Complex x = new Complex((ab12*a34 - a12*ab34)/d, (ab12*b34 - b12*ab34)/d);
 			
-			boolean aIn = (a1 <= a2) ? (a1 <= ax && ax <= a2) : (a2 <= ax && ax <= a1);
-			boolean bIn = (b1 <= b2) ? (b1 <= bx && bx <= b2) : (b2 <= bx && bx <= b1);
-			
-			if (aIn && bIn) {
-				return new Complex(ax, bx);
+			if (areaContains(x) && vector.areaContains(x)) {
+				return x;
 			} else {
 				return null;
 			}
@@ -131,30 +142,34 @@ public class ComplexVector {
 		
 		if (ov1In && ov2In) {
 			return vector;
-		} else if (ov1In) {
-			initFrameVectors();
-			
-			ComplexVector[] borders = new ComplexVector[] {left, top, bottom, right};
-			for (int i = 0; i < borders.length; i++) {
-				Complex xv2 = borders[i].intersect(vector);
-				if (xv2 != null) {
-					return new ComplexVector(ov1, xv2);
-				}
-			}
-			return new ComplexVector(ov1, ov1);
-		} else if (ov2In) {
-			initFrameVectors();
-			
-			ComplexVector[] borders = new ComplexVector[] {left, top, bottom, right};
-			for (int i = 0; i < borders.length; i++) {
-				Complex xv1 = borders[i].intersect(vector);
-				if (xv1 != null) {
-					return new ComplexVector(xv1, ov2);
-				}
-			}
-			return new ComplexVector(ov2, ov2);
 		} else {
-			return null;
+			initFrameVectors();
+			
+			List<Complex> interPoints = new ArrayList<Complex>();
+			
+			ComplexVector[] borders = new ComplexVector[] {left, top, bottom, right};
+			for (int i = 0; i < borders.length; i++) {
+				Complex xv = borders[i].intersect(vector);
+				if (xv != null) {
+					interPoints.add(xv);
+				}
+			}
+			
+			int interPointsSize = interPoints.size();
+			if (interPointsSize == 2) {
+				
+				return new ComplexVector(interPoints.get(0), interPoints.get(1));
+				
+			} else if (interPointsSize == 1) {
+				
+				if (ov1In) {
+					return new ComplexVector(ov1, interPoints.get(0));
+				} else {
+					return new ComplexVector(interPoints.get(0), ov2);
+				}
+			} else {
+				return null;
+			}
 		}
 	}
 

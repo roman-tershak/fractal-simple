@@ -4,7 +4,7 @@ public final class Complex {
 
 	public static final Complex ZERO = new Complex(0, 0);
 
-	public static final double PRECISION = 0.0e-10;
+	public static final double PRECISION = 1e-10;
 	
 	private final double a;
 	private final double b;

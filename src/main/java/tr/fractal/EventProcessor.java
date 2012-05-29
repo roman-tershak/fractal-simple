@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import tr.fractal.math.Complex;
 import tr.fractal.math.ComplexVector;
@@ -86,6 +87,9 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
+				while (paintingArea.painting()) {
+					Thread.yield();
+				}
 				zoomInOut(mx, my, zoomingRatio);
 			}
 		}, 100, 100);

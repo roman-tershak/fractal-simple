@@ -65,7 +65,6 @@ public class FractalPointIterativePainter extends AbstractPainter {
 	}
 	
 	public void setInitialPoint(Complex init) {
-//		System.out.println(init);
 		this.init = init;
 		head = Complex.ZERO;
 		trail.clear();
@@ -77,4 +76,11 @@ public class FractalPointIterativePainter extends AbstractPainter {
 		trail.add(new ComplexVector(head, newHead));
 		head = newHead;
 	}
+	
+ 	public void calculateNextStep() {
+ 		List<ComplexVector> steps = fractalFormula.calculateOneStep(head, init);
+ 		trail.addAll(steps);
+ 		
+ 		head = steps.get(steps.size() - 1).getV2();
+ 	}
 }

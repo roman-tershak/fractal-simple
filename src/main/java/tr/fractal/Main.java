@@ -10,7 +10,6 @@ import tr.fractal.math.Complex;
 import tr.fractal.math.MandelbrotFormula;
 import tr.fractal.painters.ColoredPainter;
 import tr.fractal.painters.FractalPointIterativePainter;
-import tr.fractal.painters.Painter;
 import tr.fractal.ui.PaintingArea;
 
 public class Main extends JFrame {

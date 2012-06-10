@@ -1,5 +1,8 @@
 package tr.fractal.math;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MandelbrotFormula implements FractalFormula {
 
 	public int calculate(double ca, double cb, int maxIterations) {
@@ -22,10 +25,20 @@ public class MandelbrotFormula implements FractalFormula {
 	}
 	
 	public Complex calculateOneIteration(Complex... cs) {
-		return calculateOneIteration(cs[0], cs[1]);
+		Complex z = cs[0];
+		Complex c = cs[1];
+		return z.mul(z).add(c);
 	}
 	
-	public Complex calculateOneIteration(Complex z, Complex c) {
-		return z.mul(z).add(c);
+	public List<ComplexVector> calculateOneStep(Complex... cs) {
+		Complex z = cs[0];
+		Complex c = cs[1];
+		List<ComplexVector> steps = new ArrayList<ComplexVector>();
+		
+		Complex mul = z.mul(z);
+		steps.add(new ComplexVector(z, mul));
+		steps.add(new ComplexVector(mul, mul.add(c)));
+		
+		return steps;
 	}
 }

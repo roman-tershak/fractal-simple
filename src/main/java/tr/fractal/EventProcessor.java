@@ -7,7 +7,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import tr.fractal.math.Complex;
 import tr.fractal.math.ComplexVector;
@@ -146,6 +145,10 @@ public class EventProcessor extends MouseAdapter implements KeyListener {
 			break;
 		case 'n':
 			fractalPointIterativePainter.calculateNextIteration();
+			contentPane.repaint();
+			break;
+		case 'm':
+			fractalPointIterativePainter.calculateNextStep();
 			contentPane.repaint();
 			break;
 		}
